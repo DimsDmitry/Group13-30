@@ -1,6 +1,7 @@
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.boxlayout import BoxLayout
+from kivy.core.window import Window
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
@@ -12,6 +13,9 @@ from kivy.clock import Clock
 from instructions import txt_instruction, txt_test1, txt_test2, txt_test3, txt_sits
 from ruffier import test
 from seconds import Seconds
+
+Window.clearcolor = (0.8, 0.53, 0.84, 0.4)
+btn_color = (0.98, 0.31, 0.8, 1)
 
 age = 7
 name = ''
@@ -28,23 +32,22 @@ def check_int(str_num):
 class InScr(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        insrt = Label(text=txt_instruction)
-        lbl1 = Label(text='Введите имя:', haling='right')
+        instr = Label(text=txt_instruction)
+        lbl1 = Label(text='Введите имя:', halign='right')
         self.in_name = TextInput(multiline=False)
-        lbl2 = Label(text='Введите возраст:', haling='right')
+        lbl2 = Label(text='Введите возраст:', halign='right')
         self.in_age = TextInput(text='7', multiline=False)
-        self.btn = Button(text='Начать', size_hint=(0.3, 0.2), pus_hint={'center_x': 0.5})
+        self.btn = Button(text='Начать', size_hint=(0.3, 0.2), pos_hint={'center_x': 0.5})
+        self.btn.background_color = btn_color
         self.btn.on_press = self.next
         line1 = BoxLayout(size_hint=(0.8, None), height='30sp')
         line2 = BoxLayout(size_hint=(0.8, None), height='30sp')
         line1.add_widget(lbl1)
         line1.add_widget(self.in_name)
-
         line2.add_widget(lbl2)
-        line2.add_widget(self.in_name)
-        outer = BoxLayout(orientation='vertical', possing=8, spacing=8)
+        line2.add_widget(self.in_age)
+        outer = BoxLayout(orientation='vertical', padding=8, spacing=8)
         outer.add_widget(instr)
-        outer.add_widget(self.lbl1)
         outer.add_widget(line1)
         outer.add_widget(line2)
         outer.add_widget(self.btn)
@@ -60,25 +63,13 @@ class InScr(Screen):
         else:
             self.manager.current = 'pulse1'
 
-
-class CheckSits(Screen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        instr = Label(text=txt_sits)
-        self.btn = Button(text='Продолжить', size_hint=(0.3, 0.2), pos_hint={'center_x': 0.5})
-        self.btn.on_press = self.next
-        outer = BoxLayout(orientation='vertical', padding=8, spacing=8)
-        outer.add_widget(instr)
-        outer.add_widget(self.btn)
-        self.add_widget(outer)
-
     def next(self):
         self.manager.current = 'pulse2'
 
 
 class PulseScr(Screen):
     def __init__(self, **kwargs):
-        super.__init__(**kwargs)
+        super().__init__(**kwargs)
         self.next_screen = False
 
         instr = Label(text=txt_test1)
@@ -86,13 +77,14 @@ class PulseScr(Screen):
         self.lbl_sec.bind(done=self.sec_finished)
 
         line = BoxLayout(size_hint=(0.8, None), height='30sp')
-        lbl_result = Label(text='Введите текст', haling='center')
-        self.in_result = TextInput(text='0', multiling=False)
+        lbl_result = Label(text='Введите текст', halign='center')
+        self.in_result = TextInput(text='0', multiline=False)
         self.in_result.set_disabled(True)
 
         line.add_widget(lbl_result)
         line.add_widget(self.in_result)
         self.btn = Button(text='Продолжить', size_hint=(0.3, 0.2), pos_hint={'center_x': 0.5})
+        self.btn.background_color = btn_color
         self.btn.on_press = self.next
         outer = BoxLayout(orientation='vertical', padding=8, spacing=8)
         outer.add_widget(self.lbl1)
@@ -122,6 +114,37 @@ class PulseScr(Screen):
                 self.manager.current = 'sits'
 
 
+class CheckSits(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.next_screen = False
+
+        instr = Label(text=txt_test1)
+        self.lbl_sits = Sits(10)
+        self.run = Runner(total=30, steptime=1, size_hint=(0.4, 1))
+        self.run.bind(finished=self.run_finished)
+
+        line = BoxLayout(size_hint=(0.8, None), height='30sp')
+        vlay = BoxLayout(orientation='vertical', padding=8, spacing=8)
+        vlay.add_widget(self.lbl_sits)
+
+        lbl_result = Label(text='Введите текст', halign='center')
+        self.in_result = TextInput(text='0', multiling=False)
+        self.in_result.set_disabled(True)
+        line.add_widget(instr)
+
+        self.btn = Button(text='Продолжить', size_hint=(0.3, 0.2), pos_hint={'center_x': 0.5})
+        self.btn.background_color = btn_color
+        self.btn.on_press = self.next
+        outer = BoxLayout(orientation='vertical', padding=8, spacing=8)
+        outer.add_widget(self.lbl1)
+        outer.add_widget(instr)
+        outer.add_widget(self.lbl_sec)
+        outer.add_widget(line)
+        outer.add_widget(self.btn)
+        self.add_widget(outer)
+
+
 class PulseScr2(Screen):
     def __init__(self, **kwargs):
         super.__init__(**kwargs)
@@ -136,13 +159,13 @@ class PulseScr2(Screen):
         self.lbl_sec.bind(done=self.sec_finished)
         self.lbl = Label(text='Считайте пульс')
 
-        lbl_result1 = Label(text='Результат', haling='right')
+        lbl_result1 = Label(text='Результат', halign='right')
         self.in_result1 = TextInput(text='0', multiling=False)
         line1.add_widget(lbl_result1)
         line1.add_widget(self.in_result1)
 
         line2 = BoxLayout(size_hint=(0.8, None), height='30sp')
-        lbl_result2 = Label(text='Результат', haling='right')
+        lbl_result2 = Label(text='Результат', halign='right')
         self.in_result2 = TextInput(text='0', multiling=False)
 
         self.in_result1.set_disabled(True)
@@ -152,6 +175,7 @@ class PulseScr2(Screen):
         line2.add_widget(self.in_result2)
 
         self.btn = Button(text='Начать', size_hint=(0.3, 0.2), pos_hint={'center_x': 0.5})
+        self.btn.background_color = btn_color
         self.btn.on_press = self.next
 
         outer = BoxLayout(size_hint=(0.8, None), height='30sp')

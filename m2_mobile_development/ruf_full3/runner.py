@@ -12,7 +12,7 @@ class Runner(BoxLayout):
 
 
    def __init__(self,
-               total=10,  steptime=1, autorepeat=True,
+               total=30,  steptime=1, autorepeat=True,
                bcolor=(0.73, 0.15, 0.96, 1),
                btext_inprogress='Приседание',
                **kwargs):

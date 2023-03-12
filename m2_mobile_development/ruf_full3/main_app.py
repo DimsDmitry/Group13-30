@@ -54,6 +54,7 @@ class InstrScr(Screen):
         self.add_widget(outer)
 
     def next(self):
+        global name
         name = self.in_name.text
         age = check_int(self.in_age.text)
         if age == False or age < 7:

@@ -121,16 +121,15 @@ class CheckSits(Screen):
         self.next_screen = False
 
         instr = Label(text=txt_sits, size_hint=(0.5, 1))
-        # self.lbl_sits = Sits(30)
-        # self.run = Runner(total=30, steptime=1.5, size_hint=(0.4, 1))
-        # self.run.bind(finished=self.run_finished)
-
+        self.lbl_sits = Sits(30)
+        self.run = Runner(total=30, steptime=1.5, size_hint=(0.5, 1))
+        self.run.bind(finished=self.run_finished)
         line = BoxLayout()
-        # vlay = BoxLayout(orientation='vertical', size_hint=(0.3, 1))
-        # vlay.add_widget(self.lbl_sits)
+        vlay = BoxLayout(orientation='vertical', size_hint=(0.3, 1))
+        vlay.add_widget(self.lbl_sits)
         line.add_widget(instr)
-        # line.add_widget(vlay)
-        # line.add_widget(self.run)
+        line.add_widget(vlay)
+        line.add_widget(self.run)
 
         self.btn = Button(text='Начать', size_hint=(0.3, 0.2), pos_hint={'center_x': 0.5})
         self.btn.background_color = btn_color
@@ -142,18 +141,18 @@ class CheckSits(Screen):
 
         self.add_widget(outer)
 
-    def run_finished(self, instance, value):
+    def run_finished(self, *args):
         self.btn.set_disabled(False)
         self.btn.text = 'Продолжить'
         self.next_screen = True
 
     def next(self):
-        # if not self.next_screen:
-        #     self.btn.set_disabled(True)
-        #     self.run.start()
-        #     self.run.bind(value=self.lbl_sits.next)
-        # else:
-        self.manager.current = 'pulse2'
+        if not self.next_screen:
+            self.btn.set_disabled(True)
+            self.run.start()
+            self.run.bind(value=self.lbl_sits.next)
+        else:
+            self.manager.current = 'pulse2'
 
 
 class PulseScr2(Screen):
