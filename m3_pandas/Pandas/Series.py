@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
 
-data1 = ['Pandas', 'Pygame', 'Numpy']
+
+data1 = ['Pandas', 'Pygame', 'Numpy', 11]
 print(pd.Series(data1))
 
 # Выводит индексы и строки
@@ -10,6 +11,8 @@ print(pd.Series(data1))
 Можно создать его из списка, затем передав в series,
 или создать сразу передав в метод:'''
 
+print('#' * 100)
+
 data2 = pd.Series(['Pandas', 'PyQt5'])
 print(data2)
 
@@ -17,6 +20,8 @@ print(data2)
 
 data3 = pd.Series([3, 4, 'kivy', 2.34, [1, 2, 3], {1: 2, '1': ' 2'}], index=['один', 'два', 'три', 2, 1.22, [10, 5]])
 print(data3)
+
+print('#' * 10)
 
 '''Все индексы внутри одной Series принадлежат к одному типу данных.
 Все данные в одной Series принадлежат к одному типу данных, если передать вразнобой - будет object.
@@ -30,13 +35,15 @@ n = {'a': 1, 'b': 2, 'c': 3}
 pd.Series(n)
 print(n)
 
+print('0' * 10)
+
 '''series можно заполнять рандомно'''
-s = pd.Series(np.random.randn(6), index=['p', 'q', 'r', 'n', 't','v'])
+s = pd.Series(np.random.randn(6), index=['p', 'q', 'r', 'n', 't', 'v'])
 print(s)
 
 '''методы полностью повторяют NDArray, из NumPy'''
 print(s.dtype)  # тип данных
-print(s.shape)  # форма (3 элемента одной строкой)
+print(s.shape)  # форма (6 элементов одной строкой)
 print(s.ndim)  # размерность (одномерный массив)
 print(s.size)  # кол-во элементов
 
@@ -57,7 +64,7 @@ print(s[(s > 0) & (s < 1)], '\n')
 
 print(s['t'], '\n')
 
-print(s[['r','t']])
+print(s[['r', 't']])
 
 '''синус, косинус и т.д.'''
 print(np.sin(s), '\n')
@@ -67,9 +74,9 @@ print(np.tan(s), '\n')
 print('*' * 100)
 
 '''Добавление и удаление'''
-s['pylounge'] = 1000
+s['algo'] = 1000
 print(s)
-s.drop(labels=['p', 'pylounge']) # можно обращаться по labels, index, axis (оси) и т. д.
+s.drop(labels=['p', 'algo']) # можно обращаться по labels, index, axis (оси) и т. д.
 
 print(s.sum(), '\n') #сумма
 print(s.mean(), '\n') #сред

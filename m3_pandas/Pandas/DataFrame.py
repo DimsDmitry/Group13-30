@@ -17,10 +17,10 @@ print(df)
 
 '''создание DF из словарей. Ключи - столбцы, метки строк (индексы) от 0 также, если их не задать.'''
 
-data = {'Name':['Jai', 'Princi', 'Gaurav', 'Anuj'],
-        'Age':[27, 24, 22, 32],
-        'Address':['Delhi', 'Kanpur', 'Allahabad', 'Kannauj'],
-        'Qualification':['Msc', 'MA', 'MCA', 'Phd']}
+data = {'Name': ['Jai', 'Princi', 'Gaurav', 'Anuj'],
+        'Age': [27, 24, 22, 32],
+        'Address': ['Delhi', 'Kanpur', 'Allahabad', 'Kannauj'],
+        'Qualification': ['Msc', 'MA', 'MCA', 'Phd']}
 
 df = pd.DataFrame(data)
 print(df)
