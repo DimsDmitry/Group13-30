@@ -33,7 +33,7 @@ print(df)
 print('=' * 100)
 
 '''разделение записей, например через запятую. Header=None - автоматическая нумерация столбцов'''
-df = pd.read_csv('pandas_lesson/GoogleApps.csv', sep=',', header=None, nrows=10)
+df = pd.read_csv('GoogleApps.csv', sep=',', header=None, nrows=10)
 print(df)
 
 print('=' * 100)
@@ -67,7 +67,7 @@ print(df.value_counts()) #подсчитывает количество уник
 
 print('\n', '#' * 100, '\n')
 
-df = pd.read_csv('pandas_lesson/GoogleApps.csv', sep=',', nrows=10)
+df = pd.read_csv('GoogleApps.csv', sep=',', nrows=10)
 print(df["App"].value_counts(1))
 
 print('\n', '*' * 10, '\n')

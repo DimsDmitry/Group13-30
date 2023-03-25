@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 
 
-data1 = ['Pandas', 'Pygame', 'Numpy', 11]
-print(pd.Series(data1))
+data1 = ['PandasAll', 'Pygame', 'Numpy', 11]
+print(pd.Series(data1, index=['первый', 'второй', 'третий', 'пятый']))
 
 # Выводит индексы и строки
 
@@ -13,7 +13,7 @@ print(pd.Series(data1))
 
 print('#' * 100)
 
-data2 = pd.Series(['Pandas', 'PyQt5'])
+data2 = pd.Series(['PandasAll', 'PyQt5'])
 print(data2)
 
 '''По умолчанию индексы от нуля, можно задать свои:'''
@@ -32,8 +32,7 @@ print('#' * 10)
 '''создание series можно упростить, используя словари, где К-З - это индекс-данные'''
 
 n = {'a': 1, 'b': 2, 'c': 3}
-pd.Series(n)
-print(n)
+print(pd.Series(n))
 
 print('0' * 10)
 
@@ -92,7 +91,7 @@ print(s ** 2)
 print(s.astype(np.int16)) #приводит все элементы к указанному типу
 
 print('-' * 100)
-file = pd.read_csv('pandas_lesson/GoogleApps.csv', nrows=1) #читаем файл, 1 строку (не считая 1 с заголовками)
+file = pd.read_csv('GoogleApps.csv', nrows=1) #читаем файл, 1 строку (не считая 1 с заголовками)
 print(file)
 
 '''Другие возможные варианты файлов:'''
