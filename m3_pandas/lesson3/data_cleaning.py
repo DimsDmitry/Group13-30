@@ -1,15 +1,34 @@
 import pandas as pd
 df = pd.read_csv('GooglePlayStore_wild.csv')
 # Выведи информацию о всем DataFrame, чтобы узнать какие столбцы нуждаются в очистке
-# Выведи информацию о всем DataFrame, чтобы узнать, какие столбцы нуждаются в очистке
+print(df.info())
+
+print(100 * '#')
 # Сколько в датасете приложений, у которых не указан ('NaN') рейтинг ('Rating')?
+print(len(df[pd.isnull(df['Rating'])]))
 
 # Замени пустое значение ('NaN') рейтинга ('Rating') для таких приложений на -1.
-
+df['Rating'].fillna(-1, inplace=True)
+print(df)
+print(100 * '#')
 # Определи, какое ещё значение размера ('Size') хранится в датасете помимо Килобайтов и Мегабайтов, замени его на -1.
 # Преобразуй размеры приложений ('Size') в числовой формат (float). Размер всех приложений должен измеряться в Мегабайтах.
+print(df['Size'].value_counts())
+
+def set_size(size):
+    if size[-1] == 'M':
+        return float(size[:-1])
+    elif size[-1] == 'k':
+        return float(size[:-1]) / 1024
+    return -1
+
+df['Size'] = df['Size'].apply(set_size)
+
+print(df['Size'].value_counts())
 
 # Чему равен максимальный размер ('Size') приложений из категории ('Category') 'TOOLS'?
+print(df[df['Category'] == 'TOOLS']['Size'].max())
+
 
 # Бонусные задания
 # Замени тип данных на целочисленный (int) для количества установок ('Installs').
