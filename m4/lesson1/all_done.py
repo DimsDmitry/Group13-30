@@ -36,16 +36,35 @@ def fill_sex(sex):
 df['Sex'] = df['Sex'].apply(fill_sex)
 
 
+def is_alone(row):
+    if row['SibSp'] + row['Parch'] == 0:
+        return 1
+    return 0
+
+
+df['Alone'] = df.apply(is_alone, axis=1)
+alone_tab = df.pivot_table(values='Age', columns='Alone', index='Survived', aggfunc='count')
+print(alone_tab)
+'''Среди пассажиров, которые были не одни, распределение выживших и погибших близко к соотношению 1:1 (175 и 179).
+Среди пассажиров-одиночек погибших в 2 раза больше, чем выживших.
+Вывод: Об одиноких пассажирах некому было позаботиться, в то время как члены семей помогали друг другу спасаться'''
+
+
 # Шаг 2. Создание модели
 from sklearn.model_selection import train_test_split
+# Функция для разбиения исходного набора данных на выборки для обучения и тестирования модели.
 from sklearn.preprocessing import StandardScaler
+# Класс для стандартизации показателей.
 from sklearn.neighbors import KNeighborsClassifier
+# Класс для создания и обучения модели.
 from sklearn.metrics import confusion_matrix, accuracy_score
+# Функции для оценки точности модели
 
-
+# Отделим целевую переменную Аот остальных данных
 X = df.drop('Survived', axis=1)
 y = df['Survived']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
+# train_test_split разбивает данные случайным образом на обучающие и тестовые
 
 
 sc = StandardScaler()
@@ -55,6 +74,7 @@ X_test = sc.transform(X_test)
 
 classifier = KNeighborsClassifier(n_neighbors=5)
 classifier.fit(X_train, y_train)
+# Метод fit() подбирает признаки из набора обучающих данных
 
 
 y_pred = classifier.predict(X_test)
