@@ -60,8 +60,9 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import confusion_matrix, accuracy_score
 # Функции для оценки точности модели
 
-# Отделим целевую переменную Аот остальных данных
+# Отделим целевую переменную от остальных данных
 X = df.drop('Survived', axis=1)
+print(X)
 y = df['Survived']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
 # train_test_split разбивает данные случайным образом на обучающие и тестовые
