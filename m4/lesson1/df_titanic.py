@@ -18,6 +18,7 @@ def fill_age(row):
         if row['Pclass'] == 2:
             return age_2
         return age_3
+    return row['Age']
 
 
 df['Age'] = df.apply(fill_age, axis=1)
