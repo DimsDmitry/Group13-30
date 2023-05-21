@@ -1,4 +1,8 @@
 import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import confusion_matrix, accuracy_score
 
 
 df = pd.read_csv('titanic.csv')
@@ -43,3 +47,25 @@ df['Alone'] = df.apply(is_alone, axis=1)
 surv_table = df.pivot_table(values='Age', columns='Alone', index='Survived', aggfunc='count')
 print(surv_table)
 
+
+print(100*'#')
+print('СОЗДАНИЕ МОДЕЛИ')
+X = df.drop('Survived', axis=1)
+y = df['Survived']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
+
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+classifier = KNeighborsClassifier(n_neighbors=5)
+classifier.fit(X_train, y_train)
+
+y_pred = classifier.predict(X_test)
+# сравним наглядно 5 значений
+print(y_test[:5])
+print(y_pred[:5])
+# найдём точность предсказания ВСЕХ значений
+print('Процент правильно предсказанных исходов:', accuracy_score(y_test, y_pred) * 100)
+print('Confusion matrix:')
+print(confusion_matrix(y_test, y_pred))
