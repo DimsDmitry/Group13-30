@@ -12,8 +12,9 @@ from sklearn.preprocessing import StandardScaler
 df = pd.read_csv('../train.csv')
 print(df.info())
 
+
 # Убираем пропуски
-df.dropna(inplace = True)
+df.dropna(inplace=True)
 print(df.info())
 
 
