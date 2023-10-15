@@ -15,7 +15,7 @@ class Mapmanager():
         # создаём основной узел карты
         self.startNew()
         # создаём строительные блоки
-        self.addBlock((0, 10, 0))
+        # self.addBlock((0, 10, 0))
 
     def getColor(self, z):
         if z < len(self.colors):
@@ -53,3 +53,4 @@ class Mapmanager():
                         block = self.addBlock((x, y, z0))
                     x += 1
                 y += 1
+        return x, y
