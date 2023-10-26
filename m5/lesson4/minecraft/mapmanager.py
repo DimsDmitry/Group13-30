@@ -11,7 +11,7 @@ class Mapmanager():
             (0.2, 0.2, 0.3, 1),
             (0.5, 0.5, 0.2, 1),
             (0.0, 0.6, 0.0, 1)
-            ]
+        ]
         # создаём основной узел карты
         self.startNew()
         # создаём строительные блоки
@@ -21,7 +21,7 @@ class Mapmanager():
         if z < len(self.colors):
             return self.colors[z]
         else:
-            return self.colors[len(self.colors)-1]
+            return self.colors[len(self.colors) - 1]
 
     def clear(self):
         # метод обнуляет карты
@@ -54,3 +54,23 @@ class Mapmanager():
                     x += 1
                 y += 1
         return x, y
+
+    def findBlocks(self, pos):
+        return self.land.findAllMatches("=at=" + str(pos))
+
+    def isEmpty(self, pos):
+        blocks = self.findBlocks(pos)
+        if blocks:
+            return False
+        return True
+
+    def findHighestEmpty(self, pos):
+        x, y, z = pos
+        z = 1
+        while not self.isEmpty((x, y, z)):
+            z += 1
+            return x, y, z
+
+    # def buildBlock
+    # def delBlock
+    # def delBlockFrom
