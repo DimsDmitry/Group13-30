@@ -1,21 +1,15 @@
-# напиши здесь код создания и управления картой
-class Mapmanager():
-    # управление картой
+class MapManager():
     def __init__(self):
-        # модель кубика лежит в файле block.egg
-        self.model = 'block'
-        self.texture = 'block.png'
-        # цвет блока (rgba-палитра)
-        self.colors = [
-            (0.2, 0.2, 0.35, 1),
-            (0.2, 0.2, 0.3, 1),
-            (0.5, 0.5, 0.2, 1),
-            (0.0, 0.6, 0.0, 1)
-        ]
-        # создаём основной узел карты
+        self.model = "block"
+        self.texture = "block.png"
+        self.colors = [(0.2, 0.2, 0.35, 1),
+                       (0.2, 0.2, 0.3, 1),
+                       (0.5, 0.5, 0.2, 1),
+                       (0.0, 0.6, 0.0, 1)
+                       ]
+        # Основной узел карты.
         self.startNew()
-        # создаём строительные блоки
-        # self.addBlock((0, 10, 0))
+        self.addBlock((0, 10, 0))
 
     def getColor(self, z):
         if z < len(self.colors):
@@ -24,13 +18,11 @@ class Mapmanager():
             return self.colors[len(self.colors) - 1]
 
     def clear(self):
-        # метод обнуляет карты
         self.land.removeNode()
         self.startNew()
 
     def startNew(self):
-        # метод создаёт основу для новой карты
-        self.land = render.attachNewNode('Land')
+        self.land = render.attachNewNode("Land")
 
     def addBlock(self, position):
         self.block = loader.loadModel(self.model)
@@ -41,24 +33,20 @@ class Mapmanager():
         self.block.reparentTo(self.land)
 
     def loadLand(self, filename):
-        # создаёт карту земли из текстового файла, возвращает её размеры
         self.clear()
         with open(filename) as file:
             y = 0
             for line in file:
                 x = 0
-                line = line.split(' ')
+                line = line.split(" ")
                 for z in line:
                     for z0 in range(int(z) + 1):
                         block = self.addBlock((x, y, z0))
                     x += 1
                 y += 1
-        return x, y
-
-    def findBlocks(self, pos):
-        return self.land.findAllMatches("=at=" + str(pos))
-
+            return x, y
     def isEmpty(self, pos):
+        # Проверка, является ли указанная позиция пустой
         blocks = self.findBlocks(pos)
         if blocks:
             return False
@@ -71,6 +59,8 @@ class Mapmanager():
             z += 1
             return x, y, z
 
-    # def buildBlock
-    # def delBlock
-    # def delBlockFrom
+    def findBlocks(self, pos):
+        # Поиск блоков в указанной позиции
+        return self.land.findAllMatches("=at=" + str(pos))
+
+#    def buildBlock(self):
