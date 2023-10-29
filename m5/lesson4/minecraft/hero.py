@@ -11,6 +11,46 @@ key_down = 'q'  # шаг вниз
 key_turn_left = 'n'  # поворот камеры направо
 key_turn_right = 'm'  # поворот камеры налево
 
+key_build = 'b'  # построить блок перед собой
+key_destroy = 'v'  # разрушить блок перед собой
+
+
+def check_dir(angle):
+    ''' возвращает округленные изменения координат X, Y,
+    соответствующие перемещению в сторону угла angle.
+    Координата Y уменьшается, если персонаж смотрит на угол 0,
+    и увеличивается, если смотрит на угол 180.
+    Координата X увеличивается, если персонаж смотрит на угол 90,
+    Координата X увеличивается, если персонаж смотрит на угол 90,
+    и уменьшается, если смотрит на угол 270.
+        угол 0 (от 0 до 20)      ->        Y - 1
+        угол 45 (от 25 до 65)    -> X + 1, Y - 1
+        угол 90 (от 70 до 110)   -> X + 1
+        от 115 до 155            -> X + 1, Y + 1
+        от 160 до 200            ->        Y + 1
+        от 205 до 245            -> X - 1, Y + 1
+        от 250 до 290            -> X - 1
+        от 290 до 335            -> X - 1, Y - 1
+        от 340                   ->        Y - 1  '''
+    if 0 <= angle <= 20:
+        return 0, -1
+    elif angle <= 65:
+        return 1, -1
+    elif angle <= 110:
+        return 1, 0
+    elif angle <= 155:
+        return 1, 1
+    elif angle <= 200:
+        return 0, 1
+    elif angle <= 245:
+        return -1, 1
+    elif angle <= 290:
+        return -1, 0
+    elif angle <= 335:
+        return -1, -1
+    else:
+        return 0, -1
+
 
 class Hero:
     def __init__(self, pos, land):
@@ -56,7 +96,7 @@ class Hero:
         x_from = round(self.hero.getX())
         y_from = round(self.hero.getY())
         z_from = round(self.hero.getZ())
-        dx, dy = self.check_dir(angle)
+        dx, dy = check_dir(angle)
         x_to = x_from + dx
         y_to = y_from + dy
         return x_to, y_to, z_from
@@ -89,42 +129,8 @@ class Hero:
     def move_to(self, angle):
         if self.mode:
             self.just_move(angle)
-
-    def check_dir(self, angle):
-        ''' возвращает округленные изменения координат X, Y,
-        соответствующие перемещению в сторону угла angle.
-        Координата Y уменьшается, если персонаж смотрит на угол 0,
-        и увеличивается, если смотрит на угол 180.
-        Координата X увеличивается, если персонаж смотрит на угол 90,
-        Координата X увеличивается, если персонаж смотрит на угол 90,
-        и уменьшается, если смотрит на угол 270.
-            угол 0 (от 0 до 20)      ->        Y - 1
-            угол 45 (от 25 до 65)    -> X + 1, Y - 1
-            угол 90 (от 70 до 110)   -> X + 1
-            от 115 до 155            -> X + 1, Y + 1
-            от 160 до 200            ->        Y + 1
-            от 205 до 245            -> X - 1, Y + 1
-            от 250 до 290            -> X - 1
-            от 290 до 335            -> X - 1, Y - 1
-            от 340                   ->        Y - 1  '''
-        if 0 <= angle <= 20:
-            return 0, -1
-        elif angle <= 65:
-            return 1, -1
-        elif angle <= 110:
-            return 1, 0
-        elif angle <= 155:
-            return 1, 1
-        elif angle <= 200:
-            return 0, 1
-        elif angle <= 245:
-            return -1, 1
-        elif angle <= 290:
-            return -1, 0
-        elif angle <= 335:
-            return -1, -1
         else:
-            return 0, -1
+            self.try_move(angle)
 
     def forward(self):
         angle = (self.hero.getH()) % 360
@@ -166,7 +172,6 @@ class Hero:
         else:
             self.land.delBlockFrom(pos)
 
-
     def accept_events(self):
         base.accept(key_turn_left, self.turn_left)
         base.accept(key_turn_left + '-repeat', self.turn_left)
@@ -192,3 +197,6 @@ class Hero:
 
         base.accept(key_switch_camera, self.changeView)
         base.accept(key_switch_mode, self.changeMode)
+
+        base.accept(key_build, self.build)
+        base.accept(key_destroy, self.destroy)

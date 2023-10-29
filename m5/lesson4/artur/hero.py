@@ -26,7 +26,7 @@ class Hero:
         # Инициализация свойств героя
         self.land = land
         self.mode = True
-        self.hero = loader.loadModel('smiley')  # Загрузка модели героя
+        self.hero = loader  # Загрузка модели героя
         self.hero.setColor(1, 0.5, 0)  # Установка цвета героя
         self.hero.setScale(0.3)  # Установка масштаба героя
         self.hero.setPos(pos)  # Установка позиции героя

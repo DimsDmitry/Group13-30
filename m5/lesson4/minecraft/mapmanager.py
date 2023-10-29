@@ -38,6 +38,7 @@ class Mapmanager():
         self.block.setPos(position)
         self.color = self.getColor(int(position[2]))
         self.block.setColor(self.color)
+        self.block.setTag('at', str(position))
         self.block.reparentTo(self.land)
 
     def loadLand(self, filename):
@@ -69,8 +70,21 @@ class Mapmanager():
         z = 1
         while not self.isEmpty((x, y, z)):
             z += 1
-            return x, y, z
+        return x, y, z
 
-    # def buildBlock
-    # def delBlock
-    # def delBlockFrom
+    def buildBlock(self, pos):
+        x, y, z = pos
+        new = self.findHighestEmpty(pos)  # x-0 y-1 z-2
+        if new[2] <= z + 1:
+            self.addBlock(new)
+
+    def delBlock(self, position):
+        blocks = self.findBlocks(position)
+        for block in blocks:
+            block.removeNode()
+
+    def delBlockFrom(self, position):
+        x, y, z = self.findHighestEmpty(position)
+        pos = x, y, z-1
+        for block in self.findBlocks(pos):
+            block.removeNode()
