@@ -10,15 +10,20 @@
 """
 
 key_switch_camera = "x"
-key_switch_mode = "z"
 key_forward = "w"
 key_back = "s"
 key_left = "a"
 key_right = "d"
-key_up = "space"
+key_up = "z"
 key_down = "c"
-key_turn_left = "l"
-key_turn_right = "k"
+key_turn_left = "k"
+key_turn_right = "l"
+
+key_save_map = 'g'
+key_load_map = 'h'
+
+key_build = "v"
+key_destroy = "b"
 
 
 class Hero:
@@ -26,7 +31,7 @@ class Hero:
         # Инициализация свойств героя
         self.land = land
         self.mode = True
-        self.hero = loader  # Загрузка модели героя
+        self.hero = loader.loadModel('smiley')  # Загрузка модели героя
         self.hero.setColor(1, 0.5, 0)  # Установка цвета героя
         self.hero.setScale(0.3)  # Установка масштаба героя
         self.hero.setPos(pos)  # Установка позиции героя
@@ -57,6 +62,7 @@ class Hero:
         else:
             self.cameraBind()
 
+
     def turn_left(self):
         # Поворот героя влево
         self.hero.setH((self.hero.getH() + 5) % 360)
@@ -77,7 +83,7 @@ class Hero:
         x_form = round(self.hero.getX())
         y_form = round(self.hero.getY())
         z_form = round(self.hero.getZ())
-        dx, dy = self.hero.check_dir(self, angle)
+        dx, dy = self.check_dir(angle)
         x_to = x_form + dx
         y_to = y_form + dy
         return y_to, x_to, z_form
@@ -165,18 +171,6 @@ class Hero:
         else:
             self.land.buildBlock(pos)
 
-
-
-#    def delBlockFrom(self):
-#       x, y, z =
-#        pos = x, y, z - 1
-#        blocks = self.findBlocks(pos)
-#        for block in blocks:
-#           block.removeNode()
-
-#    def delBlock(self, position):
-#        blocks =
-
     def destroy(self):
         # Разрушение блока
         angle = self.hero.getH() % 360
@@ -208,10 +202,17 @@ class Hero:
         base.accept(key_up + '-repeat', self.up)
         base.accept(key_up, self.up)
 
-        base.accept(key_down + '-repeat', self.up)
+        base.accept(key_down + '-repeat', self.down)
         base.accept(key_down, self.down)
 
-        base.accept('b', self.build)
-        base.accept('v', self.destroy)
+        base.accept(key_build, self.build)
+        base.accept(key_destroy, self.destroy)
+
+        base.accept(key_save_map, self.land.saveMap)
+        base.accept(key_load_map, self.land.loadMap)
 
         base.accept(key_switch_camera, self.changeView)
+
+
+
+

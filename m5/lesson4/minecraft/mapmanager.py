@@ -1,4 +1,7 @@
 # напиши здесь код создания и управления картой
+import pickle
+
+
 class Mapmanager():
     # управление картой
     def __init__(self):
@@ -88,3 +91,31 @@ class Mapmanager():
         pos = x, y, z-1
         for block in self.findBlocks(pos):
             block.removeNode()
+
+    def saveMap(self):
+        # сохраняет карту в бинарный файл
+        # получаем все блоки:
+        blocks = self.land.getChildren()
+        # открываем бинарный файл для чтения (если нет - он создаётся)
+        with open('my_map.dat', 'wb') as file:
+            # сохраняем кол-во блоков
+            pickle.dump(len(blocks), file)
+            for block in blocks:
+                # сохраняем коорд-ы каждого блока
+                x, y, z = block.getPos()
+                pos = (int(x), int(y), int(z))
+                pickle.dump(pos, file)
+
+    def loadMap(self):
+        # удаляет все блоки и открывает файл для чтения сохранённой карты
+        self.clear()
+        # открываем бинарный файл для чтения
+        with open('my_map.dat', 'rb') as file:
+            # получаем кол-во блоков
+            length = pickle.load(file)
+            for i in range(length):
+                pos = pickle.load(file)
+                # получаем коорд-ы блока и добавляем его
+                self.addBlock(pos)
+
+

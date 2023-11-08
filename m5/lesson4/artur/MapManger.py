@@ -1,3 +1,4 @@
+import pickle
 class MapManager():
     def __init__(self):
         self.model = "block"
@@ -22,7 +23,7 @@ class MapManager():
         self.startNew()
 
     def startNew(self):
-        self.land = render.attachNewNode("Land")
+        self.land = render.attachNewNode('Land.txt')
 
     def addBlock(self, position):
         self.block = loader.loadModel(self.model)
@@ -38,13 +39,13 @@ class MapManager():
             y = 0
             for line in file:
                 x = 0
-                line = line.split(" ")
+                line = line.split(' ')
                 for z in line:
-                    for z0 in range(int(z) + 1):
+                    for z0 in range(int(z)+1):
                         block = self.addBlock((x, y, z0))
-                    x += 1
-                y += 1
-            return x, y
+                    x+=1
+                y+=1
+        return x, y
     def isEmpty(self, pos):
         # Проверка, является ли указанная позиция пустой
         blocks = self.findBlocks(pos)
@@ -63,4 +64,39 @@ class MapManager():
         # Поиск блоков в указанной позиции
         return self.land.findAllMatches("=at=" + str(pos))
 
-#    def buildBlock(self):
+    def delBlock(self, position):
+        blocks = self.findBlocks(position)
+        for block in blocks:
+            block.removeNode()
+
+    def delBlockFrom(self, position):
+        x, y, z = self.findHighestEmpty(position)
+        pos = x, y, z-1
+        for block in self.findBlocks(pos):
+            block.removeNode()
+
+    def buildBlock(self, pos):
+        x, y, z = pos
+        new = self.findHighestEmpty(pos)
+        if new[2] <= z + 1:
+            self.addBlock(new)
+
+    def saveMap(self):
+        blocks = self.land.getChildren()
+        with open('my_map.dat', 'wb') as file:
+            pickle.dump(len(blocks), file)
+            for block in blocks:
+                x, y, z = block.getPos()
+                pos = (int(x), int(y), int(z))
+                pickle.dump(pos, file)
+
+    def loadMap(self):
+        self.clear()
+        with open('my_map.dat', 'rb') as file:
+            length = pickle.load(file)
+            for i in range(length):
+                pos = pickle.load(file)
+                self.addBlock(pos)
+
+
+

@@ -14,6 +14,9 @@ key_turn_right = 'm'  # поворот камеры налево
 key_build = 'b'  # построить блок перед собой
 key_destroy = 'v'  # разрушить блок перед собой
 
+key_savemap = 'k'  # сохранить карту
+key_loadmap = 'l'  # загрузить карту
+
 
 def check_dir(angle):
     ''' возвращает округленные изменения координат X, Y,
@@ -200,3 +203,6 @@ class Hero:
 
         base.accept(key_build, self.build)
         base.accept(key_destroy, self.destroy)
+
+        base.accept(key_savemap, self.land.saveMap)
+        base.accept(key_loadmap, self.land.loadMap)
