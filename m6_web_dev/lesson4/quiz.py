@@ -62,5 +62,68 @@ def clear_db():
     do(query)
     close()
 
+
 def add_questions():
     # добавляем вопросы в БД
+    questions = [
+        ('Сколько месяцев в году имеют 28 дней?', 'Все', 'Один', 'Ни одного', 'Два'),
+        ('Чему равно число Пи?', 'Примерно 3.14', '3', '0', 'Ровно 3.14'),
+        ('Что больше слона и ничего не весит?', 'Тень слона', 'Воздушный шар', 'Аэростат', 'Кит'),
+        ('Сколько секунд в километре?', 'Нисколько', '60', '100', 'Мало'),
+        ('Кто автор 3-го закона Ньютона?', 'Ньютон', 'Конфуций', 'Пифагор', 'Архимед'),
+        ('Какой рукой лучше размешивать чай?', 'Ложкой', 'Левой', 'Правой', 'Кружкой'),
+        ('Что не имеет длины, глубины, ширины, высоты, но можно измерить?', 'Время', 'Воздух', 'Вода', 'Глупость')
+    ]
+    open_db()
+    cursor.executemany(
+        '''INSERT INTO question (question, answer, wrong1, wrong2 , wrong3) VALUES (?, ?, ?, ?, ?)''',
+        questions
+    )
+    conn.commit()
+    close()
+
+
+def add_quiz():
+    quizes = [
+        'Своя игра',
+        'Кто хочет стать миллионером?',
+        'Самый умный'
+    ]
+    open_db()
+    cursor.executemany(
+        '''INSERT INTO quiz (name) VALUES (?)''',
+        quizes
+    )
+    conn.commit()
+    close()
+
+
+def show(table):
+    # отобразить содержимое конкретной таблицы
+    query = 'SELECT * FROM ' + table
+    open_db()
+    cursor.execute(query)
+    print(cursor.fetchall())
+    close()
+
+
+def show_tables():
+    # показать содержимое всех таблиц
+    show('question')
+    show('quiz')
+    show('quiz_content')
+
+
+def add_links():
+    # добавляет связь между вопросом и викториной, к которой он относится
+    open_db()
+    cursor.execute('''PRAGMA foreign_keys=on''')
+    query = 'INSERT INTO quiz_content (quiz_id, question_id) VALUES (?, ?)'
+    answer = input('Добавить связь (y/n)?')
+    while answer != 'n':
+        quiz_id = int(input('id викторины:'))
+        question_id = int(input('id вопроса:'))
+        cursor.execute(query, [quiz_id, question_id])
+        conn.commit()
+        answer = input('Добавить связь (y/n)?')
+    close()
