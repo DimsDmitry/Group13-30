@@ -127,3 +127,13 @@ def add_links():
         conn.commit()
         answer = input('Добавить связь (y/n)?')
     close()
+
+
+# def get_question_after(question_id=0, quiz_id=1):
+#
+#
+# def main():
+#
+#
+# if __name__ == "__main__":
+#     main()
