@@ -149,8 +149,9 @@ def main():
     add_quiz()
     add_links()
     show_tables()
-    print(get_question_after(3, 1))
+    # print(get_question_after(3, 1))
 
 
 if __name__ == "__main__":
     main()
+
