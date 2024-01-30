@@ -16,7 +16,7 @@ def open_db():
 def close():
     # закрывает соединение с БД, освобождает курсор
     cursor.close()
-    conn.close()
+    conn.commit()
 
 
 def do(query):
@@ -85,9 +85,9 @@ def add_questions():
 
 def add_quiz():
     quizes = [
-        ('Своя игра',),
-        ('Кто хочет стать миллионyером?',),
-        ('Самый умный',)
+        ('Своя игра', ),
+        ('Кто хочет стать миллионyером?', ),
+        ('Самый умный', )
     ]
     open_db()
     cursor.executemany('''INSERT INTO quiz (name) VALUES (?)''', quizes)
@@ -142,16 +142,6 @@ def get_question_after(question_id=0, quiz_id=1):
     return result
 
 
-def get_quizes():
-    # возвращает список викторин (id, name)
-    query = 'SELECT * FROM quiz ORDER BY id'
-    open_db()
-    cursor.execute(query)
-    result = cursor.fetchall()
-    close()
-    return result
-
-
 def main():
     clear_db()
     create()
@@ -164,3 +154,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
