@@ -5,7 +5,7 @@ from db_scripts import get_question_after, get_quises, check_answer
 
 
 def start_quis(quiz_id):
-    '''создаёт нужные значения в словаре session'''
+    """создаёт нужные значения в словаре session"""
     session['quiz'] = quiz_id
     session['last_question'] = 0
     session['answers'] = 0
@@ -17,7 +17,7 @@ def end_quiz():
 
 
 def quiz_form():
-    ''' функция получает список викторин из базы и формирует форму с выпадающим списком'''
+    """ функция получает список викторин из базы и формирует форму с выпадающим списком"""
     q_list = get_quises()
     return render_template('start.html', q_list=q_list)
 
